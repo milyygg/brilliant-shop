@@ -2970,7 +2970,7 @@ function render(scroll=true) {
     const cards=[...all.querySelectorAll('.product-card'),...second.querySelectorAll('.product-card')];
     if(path==='/favorites')main.innerHTML='<div class="page"><div class="page-heading"><h1>Избранное</h1><p>То, к чему хочется вернуться.</p></div><div class="product-grid catalog-grid"></div></div>';
     const params=url.searchParams,category=path.split('/')[2];
-    let selected=PRODUCTS.filter(p=>(path!='/favorites'||favorites.includes(p.id))&&(!category||p.category.slug===category)&&(!params.get('q')||(p.name+' '+p.description).toLowerCase().includes(params.get('q').toLowerCase()))&&(!params.get('material')||p.attributes['Материал']===params.get('material'))&&p.variants.some(v=>v.price>=(Number(params.get('min'))||0)*100&&v.price<=(Number(params.get('max'))||Infinity)*100&&(!params.get('stock')||v.available>0)));
+    let selected=PRODUCTS.filter(p=>(path!='/favorites'||favorites.includes(p.id))&&(!category||p.category.slug===category)&&(!params.get('q')||(p.name+' '+p.description+' '+(window.portfolioTranslations?.[p.name]||'')+' '+(window.portfolioTranslations?.[p.description]||'')).toLowerCase().includes(params.get('q').toLowerCase()))&&(!params.get('material')||p.attributes['Материал']===params.get('material'))&&p.variants.some(v=>v.price>=(Number(params.get('min'))||0)*100&&v.price<=(Number(params.get('max'))||Infinity)*100&&(!params.get('stock')||v.available>0)));
     if(params.get('sort')?.startsWith('price-'))selected.sort((a,b)=>(Math.min(...a.variants.map(v=>v.price))-Math.min(...b.variants.map(v=>v.price)))*(params.get('sort')==='price-asc'?1:-1));
     const grid=main.querySelector('.catalog-grid');if(grid){grid.innerHTML='';for(const p of selected){const c=cards.find(c=>c.querySelector('a[href="/product/'+p.slug+'"]'));if(c)grid.append(c.cloneNode(true));}if(!selected.length)grid.innerHTML='<p>Пока ничего. Попробуйте изменить фильтры.</p>';}
     main.querySelector('.pagination')?.remove();const count=main.querySelector('.result-count');if(count)count.textContent='Найдено: '+selected.length+' · Демонстрационные товары и цены';
@@ -2994,4 +2994,631 @@ function render(scroll=true) {
 }
 window.addEventListener('hashchange',()=>render());
 render();
+</script><script id="portfolio-localization">window.portfolioTranslations = {
+  "Михаил": "Mikhail",
+  "Портфолио Михаила Милосердова: сайты, каталоги, карточки товаров и визуальные материалы. Работы, подход и контакты.":"Mikhail Miloserdov's portfolio: websites, catalogs, product graphics and visuals. Work, approach and contact details.",
+  "Разработка сайтов-визиток, лендингов, каталогов, TapLink и карточек маркетплейсов. Форматы работы, цены и этапы проекта.":"Business websites, landing pages, catalogs, TapLink pages and marketplace product graphics. Services, pricing and project stages.",
+  "Сайты и инфографика для бизнеса. Портфолио Михаила Милосердова, личный Telegram и социальные сети.":"Websites and product graphics for business. Mikhail Miloserdov's portfolio, Telegram and social profiles.",
+  "Михаил Милосердов | Сайты и инфографика":"Mikhail Miloserdov | Websites and product graphics",
+  "Посмотреть работы, обсудить проект и подписаться на мои соцсети.":"Explore my work, discuss a project and follow my social profiles.",
+  "Все сайты, мини-сайты и графические работы Михаила Милосердова. Откройте любой проект и изучите его самостоятельно.":"All websites, mini websites and graphic design by Mikhail Miloserdov. Open any project and explore it yourself.",
+  "Все работы Михаила Милосердова":"All work by Mikhail Miloserdov",
+  "Сайты, мини-сайты, карточки товаров и логотипы. Каждый проект можно открыть и изучить.":"Websites, mini websites, product graphics and logos. Open and explore each project.",
+  "Сайт создан Михаилом Милосердовым.":"Website by Mikhail Miloserdov.",
+  "Доставка":"Delivery","Меню":"Menu","Сайт сделан":"Website by","Михаилом Милосердовым":"Mikhail Miloserdov","Подробнее":"Learn more","Уменьшить количество":"Decrease quantity","Увеличить количество":"Increase quantity","Цена по возрастанию":"Price: low to high","Цена по убыванию":"Price: high to low","Сбросить фильтры":"Reset filters","Категории":"Categories",
+  "Милосердов": "Miloserdov",
+  "Михаил Милосердов": "Mikhail Miloserdov",
+  "М": "M",
+  "Михаил Милосердов - веб-разработка и цифровые продукты": "Mikhail Miloserdov - web development and digital products",
+  "Михаил Милосердов | Портфолио и контакты": "Mikhail Miloserdov | Portfolio and contacts",
+  "Все работы | Михаил Милосердов": "All work | Mikhail Miloserdov",
+  "Работы": "Work",
+  "работы": "work",
+  "Все": "All",
+  "Все работы": "All work",
+  "Графика": "Graphics",
+  "графика": "graphics",
+  "Услуги и цены": "Services and pricing",
+  "Обо мне": "About me",
+  "обо мне": "about me",
+  "Контакты": "Contact",
+  "контакты": "contact",
+  "Связаться": "Get in touch",
+  "Веб-разработка и дизайн": "Web development and design",
+  "Создаю цифровые продукты, которыми": "I build digital products that are",
+  "приятно пользоваться": "a pleasure to use",
+  "Я Михаил. Разрабатываю сайты, каталоги и графику - от идеи и структуры до готового результата по ссылке.": "I'm Mikhail. I create websites, catalogs and graphics, from the initial idea and structure to a finished project you can open online.",
+  "Смотреть работы": "View work",
+  "Что я могу сделать": "What I can do",
+  "веб-разработка": "web development",
+  "Сайты и кейсы": "Websites and case studies",
+  "Опубликованные работы и демонстрационные проекты. У каждой работы указан формат и статус; сайты можно посмотреть на телефоне и компьютере.": "Published work and demo projects. Each project shows its format and status. Explore the websites on mobile or desktop.",
+  "Смотреть все работы": "View all work",
+  "Для клиента": "Client project",
+  "Сайт-визитка": "Business website",
+  "Задача.": "The brief.",
+  "Решение.": "The solution.",
+  "У частного мастера по ремонту техники были только объявления на Авито. Нужно было показать цены, работы и отзывы в одном месте.": "An independent repair specialist relied on Avito listings. The goal was to bring pricing, repair examples and reviews together in one place.",
+  "Яркий сайт с прайсом, примерами ремонтов, отзывами, блоком «Обо мне» и кнопками звонка и Telegram. Согласован с мастером.": "A vibrant website with pricing, repair examples, reviews, an about section, and call and Telegram buttons. Approved by the specialist.",
+  "Открыть сайт": "Visit website",
+  "Открыть сайт ↗": "Visit website ↗",
+  "Демонстрационный проект": "Demo project",
+  "Демонстрационная версия": "Demo version",
+  "Каталог · корзина": "Catalog · shopping cart",
+  "FLEUR - цветочная студия": "FLEUR - flower studio",
+  "Показать путь выбора букета: категория, карточка товара, корзина и оформление.": "Present the bouquet shopping journey: categories, product details, shopping cart and checkout.",
+  "Учебный каталог с фильтрами, корзиной, расчётом суммы и сохранением выбора в браузере. Адаптирован под телефон. Магазин вымышлен, реальные заказы и оплата не выполняются.": "A mobile-friendly demo catalog with filters, a shopping cart, totals and locally saved selections. This is a fictional store: no real orders or payments are processed.",
+  "Лендинг": "Landing page",
+  "Последний сигнал - квест": "The Last Signal - escape room",
+  "Последний сигнал": "The Last Signal",
+  "Передать атмосферу одного квеста и провести посетителя от знакомства с сюжетом к выбору сеанса.": "Capture the atmosphere of an escape room and guide visitors from the story to choosing a session.",
+  "Атмосферный лендинг с сюжетом, правилами, календарём, выбором времени и расчётом стоимости команды. Квест вымышлен: открывается только пример подтверждения, реальная бронь и оплата не создаются.": "An atmospheric landing page with a story, rules, calendar, time selection and team pricing. The escape room is fictional: confirmation is a demo, with no actual booking or payment.",
+  "Личный проект": "Personal project",
+  "TapLink · мини-сайт": "TapLink · mini website",
+  "TapLink - всё по одной ссылке": "TapLink - everything in one link",
+  "Собрать портфолио, услуги, Telegram и соцсети в одном месте, чтобы посетитель быстро нашёл нужное.": "Bring the portfolio, services, Telegram and social profiles together so visitors can quickly find what they need.",
+  "Самостоятельный адаптивный мини-сайт с портретом, индивидуальным оформлением и удобными кнопками. Открывается на телефоне и компьютере, не требует подписки на конструктор Taplink.": "A standalone responsive mini website with a portrait, custom design and convenient links. Works on mobile and desktop without a Taplink builder subscription.",
+  "Графический дизайн": "Graphic design",
+  "Инфографика для Wildberries и Ozon, логотипы и визуальные материалы для брендов.": "Product graphics for Wildberries and Ozon, logos and brand visuals.",
+  "Карточки для маркетплейсов": "Marketplace product graphics",
+  "Логотипы": "Logos",
+  "Все работы: карточки товаров, оформление под ключ, логотипы, визитки, листовки и баннеры ↗": "All work: product graphics, complete sets, logos, business cards, flyers and banners ↗",
+  "Привет, я Михаил": "Hi, I'm Mikhail",
+  "Получил специальность «Информационные системы и программирование» и квалификацию «Разработчик веб- и мультимедийных приложений». Работал с операционными процессами и командами в": "I studied Information Systems and Programming and qualified as a Web and Multimedia Application Developer. I have worked with operations and teams at",
+  "Ozon Fresh и СДЭК": "Ozon Fresh and CDEK",
+  ", поэтому умею смотреть на цифровой продукт не только как разработчик, но и глазами клиента.": ", which helps me see digital products from both a developer's and a customer's perspective.",
+  "Разрабатываю сайты, каталоги и графику. Люблю понятные интерфейсы, аккуратную адаптивную вёрстку и результат, который можно открыть по ссылке и сразу проверить.": "I develop websites, catalogs and graphics. I value clear interfaces, carefully built responsive layouts and results you can open online and try for yourself.",
+  "Процесс и результаты публикую в Telegram-канале": "I share my process and finished work on my Telegram channel",
+  "«Типичные будни с ИИ»": "\"Everyday Life with AI\"",
+  "Чем пользуюсь": "My toolkit",
+  "Адаптивная вёрстка": "Responsive web development",
+  "Git и GitHub": "Git and GitHub",
+  "Карточки для WB и Ozon": "Product graphics for WB and Ozon",
+  "Excel и Word": "Excel and Word",
+  "услуги": "services",
+  "Услуги": "Services",
+  "Помогу превратить задачу в понятный результат": "Let's turn your idea into a clear result",
+  "Здесь только основные направления. На отдельной странице можно сравнить форматы, увидеть примеры и узнать ориентировочную стоимость.": "These are my main services. Visit the services page to compare formats, see examples and explore indicative pricing.",
+  "Смотреть услуги и цены": "View services and pricing",
+  "Для специалиста, студии или компании: услуги, работы, доверие и удобная связь.": "For a specialist, studio or company: services, work, credibility and convenient contact options.",
+  "Страница под одну услугу или предложение с ясным маршрутом до обращения.": "A page focused on one service or offer, with a clear path to getting in touch.",
+  "Каталог": "Catalog",
+  "Витрина товаров или услуг с категориями, карточками, фильтрами и корзиной.": "A product or service catalog with categories, product cards, filters and a shopping cart.",
+  "Мобильный мини-сайт: услуги, работы, контакты и все нужные ссылки. От 3 500 ₽.": "A mobile mini website: services, work, contacts and all your essential links. From RUB 3,500.",
+  "Связаться со мной": "Get in touch",
+  "По вопросам работы, сотрудничества и проектов быстрее всего отвечаю в Telegram.": "For work, collaborations and projects, Telegram is the quickest way to reach me.",
+  "Написать напрямую": "Send a message",
+  "Телефон": "Phone",
+  "Звонок или WhatsApp": "Call or WhatsApp",
+  "Telegram-канал": "Telegram channel",
+  "Типичные будни с ИИ": "Everyday Life with AI",
+  "Процесс, результаты и новые работы": "My process, results and new work",
+  "Код проектов": "Project source code",
+  "© 2026 Михаил Милосердов": "© 2026 Mikhail Miloserdov",
+  "Портфолио ·": "Portfolio ·",
+  "· контакты": "· contact",
+  "Отключить анимацию": "Disable motion",
+  "Включить анимацию": "Enable motion",
+  "Разделы": "Sections",
+  "Смотреть все работы (откроется в новой вкладке)": "View all work (opens in a new tab)",
+  "Сайты и инфографика для бизнеса": "Websites and product graphics for business",
+  "Написать в Telegram": "Message on Telegram",
+  "Обсудим вашу задачу": "Let's discuss your project",
+  "Портфолио": "Portfolio",
+  "Сайты и дизайн карточек": "Websites and product graphics",
+  "Форматы работы и цены": "Services and pricing",
+  "От идеи до готового проекта": "From idea to finished project",
+  "Монограмма ММ": "MM monogram",
+  "Мои контакты и страницы": "My contacts and pages",
+  "Перейти к работам": "Skip to projects",
+  "В портфолио": "Back to portfolio",
+  "Сайты и графика, которые я создаю. Открывайте проекты, листайте страницы и пробуйте их в действии.": "Websites and graphics I create. Open a project, explore the pages and try it for yourself.",
+  "Выбрать работу": "Explore projects",
+  "Сайты": "Websites",
+  "Мини-сайты": "Mini websites",
+  "Каталог с корзиной · Демонстрационная версия": "Catalog with shopping cart · Demo version",
+  "Каталог с корзиной · Для клиента": "Catalog with shopping cart · Client project",
+  "Интерактивный сайт · Демонстрационный проект": "Interactive website · Demo project",
+  "Сайт-визитка · Для клиента": "Business website · Client project",
+  "Каталог с корзиной · Демонстрационный проект": "Catalog with shopping cart · Demo project",
+  "Лендинг квеста · Демонстрационный проект": "Escape room landing page · Demo project",
+  "Сайт автостудии · Демонстрационный проект": "Car studio website · Demo project",
+  "Сайт мастерской · Демонстрационный проект": "Workshop website · Demo project",
+  "Мобильный мини-сайт · Демонстрационная версия": "Mobile mini website · Demo version",
+  "Самостоятельный мини-сайт · Личный проект": "Standalone mini website · Personal project",
+  "Товарная инфографика · Дизайн": "Product graphics · Design",
+  "Фирменная графика · Дизайн": "Brand graphics · Design",
+  "Графический дизайн · Дизайн": "Graphic design · Design",
+  "Вышивка, бисер и материалы для творчества: категории, поиск, варианты товаров, избранное и демонстрационная корзина.": "Embroidery, beads and craft supplies: categories, search, product options, favorites and a demo shopping cart.",
+  "Свечи ручной работы: коллекция, выбор параметров изделия, корзина и подготовка заказа для отправки в Telegram.": "Handmade candles: explore the collection, customize products, use the cart and prepare an order to send via Telegram.",
+  "Напитки под настроение: смена вкусов, каталог, корзина, две темы и два языка.": "Drinks to match your mood: switch flavors, browse the menu, use the cart, and choose between two themes and languages.",
+  "Сайт частного мастера: услуги, цены, фотографии ремонтов и контакты.": "An independent repair specialist's website: services, pricing, repair photos and contact details.",
+  "Цветочная студия: выбор букета, фильтры, корзина и пример оформления заказа.": "A flower studio: browse bouquets, use filters and the cart, and try the demo checkout.",
+  "Атмосферная история, календарь сеансов и расчет стоимости команды.": "An atmospheric story, session calendar and team price calculator.",
+  "Подсветка, детейлинг и автозвук: выбор услуг, просмотр изображений и подготовка запроса. Вымышленный бренд, изображения ИИ.": "Ambient lighting, detailing and car audio: explore services, browse images and prepare an enquiry. Fictional brand, AI-generated imagery.",
+  "Переплёт": "Pereplet",
+  "Восстановление обуви и кожи: интерактивное сравнение и подбор услуги. Вымышленный бренд, изображения ИИ.": "Shoe and leather restoration: an interactive comparison and service selection. Fictional brand, AI-generated imagery.",
+  "Ремонт техники, фотографии работ и контакты в компактном формате.": "Appliance repairs, work photos and contact details in a compact format.",
+  "Мой TapLink": "My TapLink",
+  "Портфолио, услуги, Telegram и социальные сети на одной странице.": "Portfolio, services, Telegram and social profiles on one page.",
+  "Карточки товаров": "Product graphics",
+  "Товарная инфографика в разных стилях: техника, товары для дома, одежда и аксессуары.": "Product graphics in a range of styles: electronics, homeware, clothing and accessories.",
+  "Смотреть работы ↗": "View work ↗",
+  "Логотипы и примеры фирменного оформления для разных направлений бизнеса.": "Logos and brand design examples for a range of businesses.",
+  "Карточка товара под ключ": "Complete product listing design",
+  "Шесть слайдов одной карточки: главное фото, детали, материалы, размеры, использование и уход.": "Six slides for one product: hero image, details, materials, dimensions, use and care.",
+  "Карточки для Авито": "Avito listing graphics",
+  "Подборка работ: карточки для авито.": "Selected work: Avito listing graphics.",
+  "Листовки": "Flyers",
+  "Подборка работ: листовки.": "Selected work: flyers.",
+  "Визитки": "Business cards",
+  "Подборка работ: визитки.": "Selected work: business cards.",
+  "Баннеры": "Banners",
+  "Подборка работ: баннеры.": "Selected work: banners.",
+  "Сертификаты и посты": "Gift certificates and posts",
+  "Подборка работ: сертификаты и посты.": "Selected work: gift certificates and social posts.",
+  "Делаю сайты, мини-страницы и товарную инфографику. Объем, стоимость и сроки согласуем до начала работы.": "I create websites, mini pages and product graphics. We agree on the scope, price and timeline before work begins.",
+  "Михаил Милосердов ·": "Mikhail Miloserdov ·",
+  "Основная навигация": "Main navigation",
+  "Фильтр работ": "Filter projects",
+  "Коллекция проектов": "Project collection",
+  "Услуги и цены - Михаил Милосердов": "Services and pricing - Mikhail Miloserdov",
+  "Форматы": "Formats",
+  "Цены": "Pricing",
+  "Процесс": "Process",
+  "Написать": "Send a message",
+  "Ваше дело. Понятный сайт.": "Your business. A clear website.",
+  "Готовый запуск.": "Ready to launch.",
+  "Создам сайт для специалиста или небольшой компании: услуги, работы и удобный способ связи. Помогу разместить его в интернете, подключить ваш домен и передам исходники.": "I'll build a website for your small business or professional practice, with services, work examples and an easy way to get in touch. I'll help publish it, connect your domain and hand over the source files.",
+  "Выбрать формат": "Choose a format",
+  "Посмотреть примеры": "View examples",
+  "форматы сайтов": "website formats",
+  "В чём разница": "What's the difference?",
+  "Тип сайта определяет задача, а не количество страниц. Сайт-визитка тоже может принимать заявки; лендинг строится вокруг одного предложения.": "The purpose determines the website format, not the page count. A business website can collect enquiries too; a landing page focuses on a single offer.",
+  "Знакомство и связь": "Introduction and contact",
+  "Представляет специалиста или компанию: услуги, примеры работ, отзывы и способы связи.": "Introduces a professional or company through services, work examples, reviews and contact options.",
+  "Подходит мастеру, студии, консультанту или небольшой компании.": "Suitable for a specialist, studio, consultant or small business.",
+  "Показать пример →": "See example →",
+  "Одно предложение": "One offer",
+  "Представляет одно конкретное предложение и последовательно ведёт посетителя к обращению.": "Presents a specific offer and guides visitors toward getting in touch.",
+  "Подходит отдельной услуге, продукту или мероприятию.": "Suitable for an individual service, product or event.",
+  "Выбор": "Selection",
+  "Помогает просматривать множество товаров или услуг: категории, фильтры, карточки и корзина.": "Helps visitors explore products or services through categories, filters, product details and a shopping cart.",
+  "Подходит магазину, студии с ассортиментом или компании с большим списком услуг.": "Suitable for a shop, a studio with a product range, or a company offering many services.",
+  "стоимость": "pricing",
+  "Стартовые условия для первых трёх согласованных проектов. Фиксируем состав, стоимость и срок до разработки. Новые задачи оцениваются отдельно.": "Introductory terms for the first three agreed projects. Scope, price and timeline are agreed before development. Additional tasks are quoted separately.",
+  "от": "from",
+  "Познакомиться со специалистом и связаться.": "Introduce a professional and make contact easy.",
+  "Структура под вашу задачу": "Structure tailored to your brief",
+  "Адаптив, услуги, работы и контакты": "Responsive layout, services, work and contacts",
+  "Кнопки звонка и мессенджера": "Call and messaging buttons",
+  "Одна страница под конкретное предложение.": "One page focused on a specific offer.",
+  "Структура и адаптация под разные экраны": "Page structure and responsive design",
+  "Преимущества, примеры и ответы на вопросы": "Benefits, examples and FAQs",
+  "Обращение через согласованный мессенджер": "Enquiries via your chosen messaging app",
+  "Выбор товаров без сложных интеграций.": "Product browsing without complex integrations.",
+  "Категории и фильтры товаров": "Product categories and filters",
+  "Карточки, корзина и адаптив": "Product cards, cart and responsive layout",
+  "Передача состава заказа через мессенджер": "Send order details via a messaging app",
+  "Без онлайн-оплаты и админ-панели": "Online payments and an admin panel are not included",
+  "Мини-сайт для соцсетей: всё важное по одной ссылке.": "A mini website for your social profiles: everything important in one link.",
+  "Индивидуальное оформление и адаптив": "Custom design and responsive layout",
+  "Ваши услуги, работы, контакты и ссылки": "Your services, work, contacts and links",
+  "Рабочая страница, исходники и инструкция": "Working website, source files and instructions",
+  "Без обязательной подписки на конструктор Taplink": "No mandatory Taplink builder subscription",
+  "Посмотреть пример →": "View example →",
+  "Карточки маркетплейса": "Marketplace product graphics",
+  "Один готовый слайд с инфографикой для товара.": "One finished infographic slide for a product.",
+  "Комплект из 5 слайдов - 4 000 ₽": "A set of 5 slides - RUB 4,000",
+  "Композиция и оформление в едином стиле": "Consistent composition and visual style",
+  "PNG/JPG в согласованном размере": "PNG/JPG in the agreed dimensions",
+  "Итоговая стоимость зависит от количества разделов, готовности материалов и необходимых функций. Домен, платные сервисы и сторонние подписки оплачиваются отдельно.": "The final price depends on the number of sections, available content and required features. Domains, paid services and third-party subscriptions are billed separately.",
+  "Согласовываем": "Agree on the scope",
+  "Фиксируем структуру, стоимость и срок. До разработки показываю направление страницы.": "We agree on the structure, price and timeline. I show you the design direction before development.",
+  "Проверяем": "Review",
+  "Вы открываете рабочую версию по ссылке и присылаете замечания одним списком.": "You open the working version online and send your feedback in one list.",
+  "Запускаем": "Launch",
+  "Публикую сайт, проверяю, как он выглядит и работает на смартфоне и компьютере, затем передаю ссылку и файлы проекта.": "I publish the website, check its appearance and functionality on mobile and desktop, then hand over the link and project files.",
+  "до работающего адреса": "through to a live website",
+  "Что входит в запуск": "What's included in the launch",
+  "Не просто файлы: размещение на вашем хостинге, подключение вашего домена и HTTPS при поддержке хостинга. Передаю исходники и инструкцию. Домен и хостинг оформляются на вас и оплачиваются отдельно.": "More than just files: deployment to your hosting, connection of your domain and HTTPS where supported by the host. Source files and instructions are included. The domain and hosting are registered to you and paid for separately.",
+  "Ваш результат": "What you receive",
+  "Согласованный сайт, мобильная версия и рабочие кнопки обращения.": "The agreed website, a mobile layout and working contact buttons.",
+  "Понятные правки": "Clear revision arrangements",
+  "Состав работы, стоимость, сроки и порядок внесения изменений обсуждаем лично перед началом проекта.": "We discuss the scope, pricing, timeline and revision process together before the project starts.",
+  "Поддержка сайта": "Website maintenance",
+  "По желанию - 5 000 ₽ в месяц: до 3 небольших правок. Каждая следующая - 2 000 ₽ после согласования. Можно подключить после передачи сайта.": "Optional maintenance: RUB 5,000 per month for up to 3 small updates. Each additional update is RUB 2,000, subject to agreement. Available after handover.",
+  "Небольшая правка - одна задача в существующем блоке: заменить текст, изображение, цену или контакт либо поправить отображение элемента. Новые страницы, функции, редизайн и сложные интеграции оцениваются отдельно. Срок каждой задачи согласуем до начала; поддержка не означает круглосуточное дежурство.": "A small update means one task in an existing section: replacing text, an image, a price or contact detail, or fixing an element's appearance. New pages, features, redesigns and complex integrations are quoted separately. Each task's timeline is agreed in advance; maintenance does not include 24/7 availability.",
+  "Что обсуждаем отдельно": "Quoted separately",
+  "Редактирование без разработчика: отдельная панель, где вы самостоятельно меняете товары, тексты и цены.": "Self-service editing: an admin panel where you can update products, text and prices.",
+  "Оплата на сайте: подключение приёма платежей картой и платёжного сервиса.": "Online payments: integrating card payments and a payment provider.",
+  "Личный кабинет: регистрация, вход, история заказов и персональные данные клиента.": "Customer accounts: registration, sign-in, order history and customer details.",
+  "Автоматическая отправка заявок: форма, которая сама передаёт данные на почту или в систему учёта клиентов, без ручной отправки через мессенджер.": "Automated enquiries: a form that sends information directly to email or a CRM, without manually sending a message.",
+  "Эти возможности не входят в стартовые цены. Если они нужны, сначала проверим подходящее решение и согласуем отдельный объём и стоимость.": "These features are not included in the starting prices. If needed, we will first check the right solution and agree on a separate scope and price.",
+  "Обсудить задачу": "Discuss your project",
+  "Напишите, что хотите сделать и какие материалы уже есть. Я помогу определить подходящий формат.": "Tell me what you would like to create and what materials you already have. I'll help you choose a suitable format.",
+  "Самый быстрый способ связи": "The quickest way to reach me",
+  "Пример формата": "Format example",
+  "· услуги · контакты": "· services · contact",
+  "Закрыть": "Close",
+  "Есть два формата: самостоятельный HTML-мини-сайт или дизайн-материалы для официального Taplink - макет, изображения блоков, тексты и инструкция по сборке. Сборка в вашем аккаунте конструктора согласуется отдельно. HTML-сайт нельзя импортировать туда целиком: блоки, кнопки и ссылки настраиваются в редакторе. Тариф конструктора выбирается под нужные функции и оплачивается отдельно, если требуется. Для самостоятельного сайта домен и хостинг оформляются на вас и оплачиваются отдельно. Формы, онлайн-запись, оплата и другие интеграции обсуждаются отдельно.": "Two options are available: a standalone HTML mini website, or design materials for the official Taplink builder, including layouts, block images, text and assembly instructions. Building it in your Taplink account is agreed separately. A complete HTML website cannot be imported into the builder: blocks, buttons and links are configured in its editor. Any required builder plan is chosen for the features you need and paid for separately. For a standalone website, the domain and hosting are registered to you and paid for separately. Forms, booking, payments and other integrations are discussed separately.",
+  "Небольшая доработка существующего сайта - от 2000 ₽ за одну согласованную задачу после проверки исходников.": "Small updates to an existing website start at RUB 2,000 per agreed task, after reviewing the source files.",
+  "процесс": "process",
+  "Четыре шага до запуска": "Four steps to launch",
+  "Общаться можно в мессенджере. Созвон требуется только тогда, когда так действительно быстрее.": "We can communicate through a messaging app. A call is only needed when it actually saves time.",
+  "Знакомимся": "Get acquainted",
+  "Обсуждаем задачу, аудиторию и материалы. Я задаю вопросы и предлагаю подходящий формат.": "We discuss the brief, audience and available content. I ask questions and suggest a suitable format.",
+  "Сайт Pigeon Service на компьютере и телефоне": "Pigeon Service website on desktop and mobile",
+  "Сайт цветочной студии FLEUR на компьютере и телефоне": "FLEUR flower studio website on desktop and mobile",
+  "Лендинг квеста Последний сигнал": "The Last Signal escape room landing page",
+  "Мой TapLink: портфолио, услуги и контакты на одной странице": "My TapLink: portfolio, services and contacts on one page",
+  "Карточка товара: конденсаторный микрофон": "Product graphic: condenser microphone",
+  "Карточка товара: стеклянный кувшин": "Product graphic: glass pitcher",
+  "Карточка товара: мужские носки": "Product graphic: men's socks",
+  "Карточка товара: Деревянный конструктор": "Product graphic: wooden building blocks",
+  "Логотип компьютерного клуба Nexus Cybernetics": "Nexus Cybernetics gaming club logo",
+  "Логотип цветочного магазина Aura Botanica": "Aura Botanica flower shop logo",
+  "Логотип Find Me": "Find Me logo",
+  "Логотип интернет-магазина Online Store": "Online Store shop logo"
+};
+
+Object.assign(window.portfolioTranslations, {
+  "Brilliant shop | Вышивка, бисер и творчество":"Brilliant shop | Embroidery, beads and creativity",
+  "Автономная демонстрация. Товары и цены для показа. Заказы и оплата не отправляются.":"Offline demo. Products and prices are for display. Orders and payments are not submitted.",
+  "В автономной версии можно выбрать товары и сохранить список из корзины. Регистрация, отправка заказа и оплата не подключены.":"In this offline version you can choose products and save a list from your cart. Registration, order submission and payment are not connected.",
+  "Найти своё":"Find your inspiration","Например, ромашка":"For example, daisy","Найти":"Search","Избранное":"Favorites","Ваша корзина":"Your cart","Демонстрация выбора товаров. Реальный заказ здесь не создаётся.":"A product selection demo. No actual order is created here.","Удалить":"Remove","Продолжить выбор":"Continue shopping","Сохранить список":"Save list","Корзина пока пуста.":"Your cart is empty.","Список сохраняется только на вашем устройстве. Сервер, доставка и оплата в HTML-версии не подключены.":"The list is saved only on your device. Server features, delivery and payment are not connected in this HTML version.","То, к чему хочется вернуться.":"Things you'd like to come back to.","Пока ничего. Попробуйте изменить фильтры.":"Nothing found yet. Try changing the filters.","Добавлено в демонстрационную корзину":"Added to the demo cart","Закрыть ×":"Close ×","Маленький акцент. Своя история.":"A little accent. Your own story.","Цветы, которые всегда с вами.":"Flowers that stay with you.","Время для себя и новой идеи.":"Time for yourself and a new idea.","Всё начинается с одной детали.":"It all starts with one detail.",
+  "Перейти к содержимому": "Skip to content",
+  "Демонстрационный магазин. Товары, цены и изображения для показа. Реальные деньги не списываются.": "Demo store. Products, prices and images are for display. No real money is charged.",
+  "Каталог": "Catalog",
+  "О магазине": "About the shop",
+  "Доставка и оплата": "Delivery and payment",
+  "Контакты": "Contact",
+  "Вдохновение в деталях": "Inspiration in the details",
+  "Брелки с вышивкой, украшения из бисера и всё для ваших творческих идей.": "Embroidered keychains, beaded jewelry and everything for your creative ideas.",
+  "Смотреть каталог": "Explore the catalog",
+  "Брелки с вышивкой": "Embroidered keychains",
+  "Украшения из бисера": "Beaded jewelry",
+  "Наборы для творчества": "Craft kits",
+  "Материалы": "Supplies",
+  "Из простых деталей рождается особенное.": "Simple details become something special.",
+  "Что вам близко?": "What inspires you?",
+  "Готовая вещь или радость": "A finished piece or the joy of",
+  "создать её своими руками.": "making it yourself.",
+  "Маленькие вышитые истории, которые всегда рядом.": "Little embroidered stories to keep close.",
+  "Цвет, фактура и лёгкие акценты на каждый день.": "Color, texture and subtle accents for every day.",
+  "Всё для первого стежка и новой идеи.": "Everything for a first stitch and a new idea.",
+  "Бисер, нитки и фурнитура для ваших проектов.": "Beads, threads and findings for your projects.",
+  "Присмотритесь": "Take a closer look",
+  "Рекомендуем для знакомства с магазином.": "A few favorites to introduce you to the shop.",
+  "Весь каталог": "Full catalog",
+  "Льняная ромашка": "Linen Daisy",
+  "от 300 ₽": "from RUB 300",
+  "Выбрать": "Choose",
+  "Колье «Тёплая глина»": "Warm Clay Necklace",
+  "В корзину": "Add to cart",
+  "Набор «Бисерные ромашки»": "Beaded Daisies Kit",
+  "Мулине «Тёплые оттенки»": "Warm Shades Embroidery Floss",
+  "Время создавать": "Time to create",
+  "Выбирайте готовые изделия или создавайте свои. Здесь собраны материалы, наборы и маленькие вещи, с которых начинается творчество.": "Choose finished pieces or make your own. Discover supplies, kits and little things that spark creativity.",
+  "Познакомиться с магазином": "Get to know the shop",
+  "Новое вдохновение": "Fresh inspiration",
+  "Все новинки": "All new arrivals",
+  "Нет в наличии": "Out of stock",
+  "Иглы для вышивки": "Embroidery Needles",
+  "Фурнитура «Латунный тон»": "Brass Tone Findings",
+  "Бисер «Природная палитра»": "Natural Palette Beads",
+  "От идеи до посылки": "From idea to parcel",
+  "Отправление из Санкт-Петербурга. Стоимость и условия доставки согласуются до оплаты.": "Shipping from Saint Petersburg. Shipping costs and terms are agreed before payment.",
+  "Как устроена доставка": "How delivery works",
+  "Можно оформить без регистрации?": "Can I order without registering?",
+  "Да. Добавьте товары в корзину и заполните контакты для заказа. Сохраните личную ссылку на его страницу.": "Yes. Add items to your cart and provide your contact details. Keep the private link to your order page.",
+  "Когда будет известна стоимость доставки?": "When will I know the delivery cost?",
+  "До оплаты. Пока тарифы не подключены, магазин согласует стоимость вручную и обновит итог на странице заказа.": "Before payment. Until shipping rates are integrated, the shop confirms the cost manually and updates your order total.",
+  "Это реальные товары магазина?": "Are these actual shop products?",
+  "Сейчас показан демонстрационный ассортимент. Фотографии сгенерированы для проекта; цены и характеристики требуют согласования с владельцем.": "The current range is for demonstration. Images were generated for this project; prices and specifications need the owner's approval.",
+  "Для маленьких вещей": "For little things",
+  "с большим смыслом.": "with great meaning.",
+  "Из Санкт-Петербурга - к вашим творческим идеям.": "From Saint Petersburg to your creative ideas.",
+  "Возврат": "Returns",
+  "Контакты и реквизиты": "Contact and business details",
+  "Персональные данные": "Personal data",
+  "Условия продажи": "Terms of sale",
+  "Сайт сделан": "Website by",
+  "Михаилом Милосердовым": "Mikhail Miloserdov",
+  "Вышивка · Бисер · Творчество": "Embroidery · Beads · Creativity",
+  "Brilliant shop - главная": "Brilliant shop - home",
+  "Основная навигация": "Main navigation",
+  "Открыть поиск": "Open search",
+  "Избранное: 0": "Favorites: 0",
+  "Корзина: 0": "Cart: 0",
+  "Открыть меню": "Open menu",
+  "Посмотреть категории": "Browse categories",
+  "Композиция с вышивкой и бисером - демонстрационное изображение": "Embroidery and beads arrangement - demo image",
+  "Перейти в выбранный каталог": "Open selected category",
+  "Брелки с вышивкой - демонстрационная композиция": "Embroidered keychains - demo arrangement",
+  "Украшения из бисера - демонстрационная композиция": "Beaded jewelry - demo arrangement",
+  "Наборы для творчества - демонстрационная композиция": "Craft kits - demo arrangement",
+  "Материалы - демонстрационная композиция": "Supplies - demo arrangement",
+  "Демонстрационное изображение: Льняная ромашка": "Demo image: Linen Daisy",
+  "В избранное: Льняная ромашка": "Add to favorites: Linen Daisy",
+  "Демонстрационное изображение: Колье «Тёплая глина»": "Demo image: Warm Clay Necklace",
+  "В избранное: Колье «Тёплая глина»": "Add to favorites: Warm Clay Necklace",
+  "Демонстрационное изображение: Набор «Бисерные ромашки»": "Demo image: Beaded Daisies Kit",
+  "В избранное: Набор «Бисерные ромашки»": "Add to favorites: Beaded Daisies Kit",
+  "Демонстрационное изображение: Мулине «Тёплые оттенки»": "Demo image: Warm Shades Embroidery Floss",
+  "В избранное: Мулине «Тёплые оттенки»": "Add to favorites: Warm Shades Embroidery Floss",
+  "Демонстрационная композиция с материалами для рукоделия": "Demo arrangement of craft supplies",
+  "Демонстрационное изображение: Иглы для вышивки": "Demo image: Embroidery Needles",
+  "В избранное: Иглы для вышивки": "Add to favorites: Embroidery Needles",
+  "Демонстрационное изображение: Фурнитура «Латунный тон»": "Demo image: Brass Tone Findings",
+  "В избранное: Фурнитура «Латунный тон»": "Add to favorites: Brass Tone Findings",
+  "Демонстрационное изображение: Бисер «Природная палитра»": "Demo image: Natural Palette Beads",
+  "В избранное: Бисер «Природная палитра»": "Add to favorites: Natural Palette Beads",
+  "Каталог в подвале": "Footer catalog",
+  "Документы": "Documents",
+  "Главная": "Home",
+  "Найдите своё": "Find your inspiration",
+  "Готовые изделия для себя и в подарок. Наборы и материалы для ваших идей.": "Finished pieces for yourself and as gifts. Kits and supplies for your ideas.",
+  "Всё": "All",
+  "Поиск": "Search",
+  "Цена, ₽": "Price, RUB",
+  "Материал": "Material",
+  "Все материалы": "All materials",
+  "Для рукоделия": "Craft supplies",
+  "Смешанные материалы": "Mixed materials",
+  "Бисер": "Beads",
+  "Лён и мулине": "Linen and embroidery floss",
+  "Порядок": "Sort by",
+  "Сначала новые": "Newest first",
+  "Цена по возрастанию": "Price: low to high",
+  "Цена по убыванию": "Price: high to low",
+  "Только в наличии": "In stock only",
+  "Показать": "Show",
+  "Сбросить фильтры": "Reset filters",
+  "Найдено: 16 · Демонстрационные товары и цены": "Found: 16 · Demo products and prices",
+  "Набор «Тихий лес»": "Quiet Forest Kit",
+  "Набор «Лаванда»": "Lavender Kit",
+  "Набор «Ботаника»": "Botanical Kit",
+  "Кольцо «Цветок»": "Flower Ring",
+  "Серьги «Шалфей»": "Sage Earrings",
+  "Браслет «Ромашки»": "Daisy Bracelet",
+  "от 650 ₽": "from RUB 650",
+  "Категории": "Categories",
+  "Название или описание": "Name or description",
+  "От": "From",
+  "Цена от": "Minimum price",
+  "До": "To",
+  "Цена до": "Maximum price",
+  "Демонстрационное изображение: Набор «Тихий лес»": "Demo image: Quiet Forest Kit",
+  "В избранное: Набор «Тихий лес»": "Add to favorites: Quiet Forest Kit",
+  "Демонстрационное изображение: Набор «Лаванда»": "Demo image: Lavender Kit",
+  "В избранное: Набор «Лаванда»": "Add to favorites: Lavender Kit",
+  "Демонстрационное изображение: Набор «Ботаника»": "Demo image: Botanical Kit",
+  "В избранное: Набор «Ботаника»": "Add to favorites: Botanical Kit",
+  "Демонстрационное изображение: Кольцо «Цветок»": "Demo image: Flower Ring",
+  "В избранное: Кольцо «Цветок»": "Add to favorites: Flower Ring",
+  "Демонстрационное изображение: Серьги «Шалфей»": "Demo image: Sage Earrings",
+  "В избранное: Серьги «Шалфей»": "Add to favorites: Sage Earrings",
+  "Демонстрационное изображение: Браслет «Ромашки»": "Demo image: Daisy Bracelet",
+  "В избранное: Браслет «Ромашки»": "Add to favorites: Daisy Bracelet",
+  "Страницы каталога": "Catalog pages",
+  "Лист папоротника": "Fern Leaf",
+  "Лесная история": "Forest Story",
+  "Полевой цветок": "Wildflower",
+  "Демонстрационное изображение: Лист папоротника": "Demo image: Fern Leaf",
+  "В избранное: Лист папоротника": "Add to favorites: Fern Leaf",
+  "Демонстрационное изображение: Лесная история": "Demo image: Forest Story",
+  "В избранное: Лесная история": "Add to favorites: Forest Story",
+  "Демонстрационное изображение: Полевой цветок": "Demo image: Wildflower",
+  "В избранное: Полевой цветок": "Add to favorites: Wildflower",
+  "Готовые изделия и материалы для собственных идей. Brilliant shop объединяет вышивку, бисер и творчество. История магазина и сведения о мастере появятся после согласования с владельцем.": "Finished pieces and supplies for your own ideas. Brilliant shop brings together embroidery, beads and creativity. The shop's story and maker information will be added after approval by the owner.",
+  "Демонстрационная композиция с вышивкой и бисером": "Demo arrangement of embroidery and beads",
+  "Отправление из Санкт-Петербурга. Доступны предварительные заявки на доставку СДЭК и Почтой России, в пункт выдачи или по адресу. Онлайн-расчёт тарифов пока не подключён. Магазин согласует стоимость до оплаты. Сроки зависят от перевозчика и будут указаны после расчёта. В демонстрационной версии деньги не списываются.": "Shipping from Saint Petersburg. Preliminary requests are available for CDEK and Russian Post delivery to a pickup point or address. Automatic rate calculation is not connected yet. The shop confirms shipping costs before payment. Delivery times depend on the carrier and will be provided after calculation. No money is charged in this demo.",
+  "Возврат товаров": "Product returns",
+  "Шаблон для заполнения и проверки владельцем перед публикацией. Сведения пока не утверждены.": "Template for the owner to complete and review before publication. The information is not yet approved.",
+  "Шаблон для проверки продавцом. Здесь необходимо указать порядок обращения, адрес для возврата, сроки и условия с учётом действующего законодательства и конкретного вида товара. Индивидуальные изделия требуют отдельного описания условий; сам факт ручной работы не означает запрета возврата. Контакты продавца необходимо заполнить.": "Template for seller review. Specify the contact procedure, return address, time limits and conditions appropriate to applicable law and the product type. Custom products need a separate description of their terms; being handmade alone does not mean returns are prohibited. Seller contact information must be completed.",
+  "Контакты и реквизиты предпринимателя ещё не предоставлены. Перед началом продаж владелец должен указать ФИО ИП, ИНН, ОГРНИП, адрес для обращений, email и телефон.": "The seller's contact and business details have not been supplied. Before sales begin, the owner must provide the individual entrepreneur's full name, INN and OGRNIP identifiers, correspondence address, email and telephone number.",
+  "Магазин": "Shop",
+  "Не заполнено владельцем": "Not completed by the owner",
+  "Телефон": "Phone",
+  "ИП": "Individual entrepreneur",
+  "ИНН": "INN (taxpayer ID)",
+  "ОГРНИП": "OGRNIP (business registration ID)",
+  "Адрес": "Address",
+  "Город отправления": "Shipping city",
+  "Санкт-Петербург": "Saint Petersburg",
+  "Обработка персональных данных": "Personal data processing",
+  "Шаблон, требует проверки перед публикацией. Оператор: заполнить ФИО ИП, адрес и контакты. Для обработки заказа запрашиваются имя, телефон, email, регион, город и сведения о получении. Указать цели, основания, сроки хранения, получателей данных, размещение базы, порядок обращений и удаления данных. Корзина и избранное сохраняются локально в браузере. Аналитика и рекламные рассылки не подключены.": "Template requiring review before publication. Operator: provide the individual entrepreneur's name, address and contact details. Order processing requests a name, phone number, email, region, city and delivery information. Specify purposes, legal bases, retention periods, data recipients, database location, and procedures for enquiries and deletion. The cart and favorites are saved locally in the browser. Analytics and marketing mailings are not connected.",
+  "Шаблон, требует проверки продавцом. Заполнить реквизиты продавца, описание ассортимента, порядок заключения договора и подтверждения заказа, стоимость, способы оплаты, согласование доставки, условия возврата и порядок обращений. Демонстрационные товары и цены не являются утверждённым предложением для реальных продаж.": "Template requiring seller review. Complete the seller's business details, product range, contract and order confirmation procedure, pricing, payment methods, delivery arrangements, return terms and enquiry procedure. Demo products and prices are not an approved offer for actual sales.",
+  "Найдено:": "Found:",
+  "· Демонстрационные товары и цены": "· Demo products and prices",
+  "Найдено: 4 · Демонстрационные товары и цены": "Found: 4 · Demo products and prices",
+  "Демонстрационный комплект игл для ручной работы. Размеры, комплектация и производитель требуют подтверждения.": "A demo set of hand-sewing needles. Sizes, contents and manufacturer require confirmation.",
+  "Артикул DEMO-4-4-1 · Нет в наличии": "SKU DEMO-4-4-1 · Out of stock",
+  "Добавить в корзину": "Add to cart",
+  "Вариант": "Option",
+  "Основной": "Standard",
+  "Демонстрационная модель. Изображение сгенерировано, цена и характеристики требуют подтверждения.": "Demo product. The image is generated; price and specifications require confirmation.",
+  "Доставка из Санкт-Петербурга. Стоимость согласуется до оплаты.": "Shipping from Saint Petersburg. Cost agreed before payment.",
+  "Подробнее": "Learn more",
+  "В том же настроении": "In the same mood",
+  "Увеличить изображение": "Enlarge image",
+  "Уменьшить количество": "Decrease quantity",
+  "Увеличить количество": "Increase quantity",
+  "В избранное": "Add to favorites",
+  "Демонстрационный набор колец и застёжек для творческих работ. Состав металла и число деталей пока не утверждены.": "A demo set of rings and clasps for craft projects. Metal composition and item count are not yet approved.",
+  "Артикул DEMO-4-3-1 · В наличии: 7": "SKU DEMO-4-3-1 · In stock: 7",
+  "Демонстрационная подборка хлопковых нитей. Цветовые номера, длина и производитель уточняются перед публикацией.": "A demo selection of cotton threads. Color codes, lengths and manufacturer will be confirmed before publication.",
+  "Артикул DEMO-4-2-1 · В наличии: 6": "SKU DEMO-4-2-1 · In stock: 6",
+  "Демонстрационный набор бисера в природных оттенках. Производитель, размер и масса должны быть указаны владельцем.": "A demo bead set in natural shades. The owner must specify the manufacturer, size and weight.",
+  "Артикул DEMO-4-1-1 · В наличии: 5": "SKU DEMO-4-1-1 · In stock: 5",
+  "Небольшой проект для спокойного творческого вечера. Демонстрационный набор с пяльцами, тканью и нитями.": "A small project for a peaceful creative evening. A demo kit with an embroidery hoop, fabric and threads.",
+  "Артикул DEMO-3-4-1 · В наличии: 8": "SKU DEMO-3-4-1 · In stock: 8",
+  "Комплектация": "Kit contents",
+  "Демонстрационная; уточнить у продавца": "For demonstration; confirm with seller",
+  "Демонстрационный набор для вышивки с лавандовым мотивом: пяльцы, канва, мулине, игла и схема.": "A demo lavender embroidery kit: hoop, canvas, embroidery floss, needle and pattern.",
+  "Артикул DEMO-3-3-1 · В наличии: 7": "SKU DEMO-3-3-1 · In stock: 7",
+  "Демонстрационный набор для сборки браслета: бисер, основа, игла и схема. Комплектация приведена для показа карточки.": "A demo bracelet-making kit: beads, base, needle and pattern. Contents are shown to demonstrate the product page.",
+  "Артикул DEMO-3-2-1 · В наличии: 6": "SKU DEMO-3-2-1 · In stock: 6",
+  "Демонстрационный набор: пяльцы, основа, нити, игла и схема. Фактическая комплектация утверждается продавцом перед продажей.": "Demo kit: hoop, base, threads, needle and pattern. Actual contents must be approved by the seller before sale.",
+  "Артикул DEMO-3-1-1 · В наличии: 5": "SKU DEMO-3-1-1 · In stock: 5",
+  "Маленький цветок из бисера для повседневного образа. Демонстрационная модель, размер не является утверждённой характеристикой.": "A small beaded flower for an everyday look. Demo product: its size is not an approved specification.",
+  "Артикул DEMO-2-4-1 · В наличии: 8": "SKU DEMO-2-4-1 · In stock: 8",
+  "Листья из бисера в приглушённом зелёном оттенке. Демонстрационное изделие, металл фурнитуры требует подтверждения.": "Beaded leaves in a muted green shade. Demo product: the findings' metal requires confirmation.",
+  "Артикул DEMO-2-3-1 · В наличии: 7": "SKU DEMO-2-3-1 · In stock: 7",
+  "Бисерное колье в тёплых природных оттенках с небольшим акцентом в центре. Демонстрационное украшение.": "A beaded necklace in warm natural shades with a small central accent. Demo jewelry.",
+  "Артикул DEMO-2-2-1 · В наличии: 6": "SKU DEMO-2-2-1 · In stock: 6",
+  "от": "from",
+  "Лёгкий браслет из бисера с маленькими цветами. Демонстрационный образец, состав и посадка уточняются.": "A lightweight beaded bracelet with small flowers. Demo sample: materials and fit require confirmation.",
+  "Выберите вариант, чтобы увидеть цену и наличие": "Choose an option to see price and availability",
+  "Вариант исполнения": "Design option",
+  "Шалфей": "Sage",
+  "Молочный": "Ivory",
+  "Спокойный природный мотив на натуральном льне. Демонстрационная модель брелка с двумя вариантами размера.": "A calm botanical motif on natural linen. A demo keychain with two size options.",
+  "Маленький · 300 ₽": "Small · RUB 300",
+  "Средний · 500 ₽": "Medium · RUB 500",
+  "Миниатюрная вышивка с лесным мотивом и металлическим кольцом. Изображение и описание демонстрационные.": "Miniature woodland embroidery with a metal ring. Image and description are for demonstration.",
+  "Круглый брелок с нежными ромашками. Демонстрационное изделие для знакомства с возможностями каталога.": "A round keychain with delicate daisies. A demo product introducing the catalog's features.",
+  "Брелок с ботанической вышивкой на льняной основе. Демонстрационный образец: рисунок, размеры и материалы требуют подтверждения продавца.": "A keychain with botanical embroidery on a linen base. Demo sample: the design, dimensions and materials require seller approval."
+});
+
+/* Local dictionaries only: no visitor text is sent to a translation service. */
+(() => {
+  const key = 'miloserdov-language';
+  const query = new URLSearchParams(location.search).get('lang');
+  let saved;
+  try { saved = localStorage.getItem(key); } catch {}
+  let language = ['ru', 'en'].includes(query) ? query : ['ru', 'en'].includes(saved) ? saved : (navigator.languages?.[0] || navigator.language || 'en').toLowerCase().startsWith('ru') ? 'ru' : 'en';
+  const dictionaries = window.portfolioTranslations || {};
+  const originals = new WeakMap();
+  const attributes = new WeakMap();
+  const imageSources = new WeakMap();
+  let observer;
+  let control;
+  function translated(value) {
+    const trimmed = value.trim();
+    if (language === 'ru') return value;
+    let result = dictionaries[trimmed];
+    if (!result) {
+      const count = /^(Все проекты|Показано): (\d+)$/.exec(trimmed);
+      if (count) result = `${count[1] === 'Все проекты' ? 'All projects' : 'Showing'}: ${count[2]}`;
+      const open = /^Открыть (.+) в новой вкладке$/.exec(trimmed);
+      if (open) result = `Open ${dictionaries[open[1]] || open[1]} in a new tab`;
+      const preview = /^(.+): предпросмотр работы$/.exec(trimmed);
+      if (preview) result = `${dictionaries[preview[1]] || preview[1]}: project preview`;
+      const visit = /^(Открыть сайт|Смотреть): (.+) \(новая вкладка\)$/.exec(trimmed);
+      if (visit) result = `${visit[1] === 'Смотреть' ? 'View' : 'Visit website'}: ${dictionaries[visit[2]] || visit[2]} (new tab)`;
+      const addPrice = /^В корзину · (.+)$/.exec(trimmed);
+      if (addPrice) result = `Add to cart · ${addPrice[1]}`;
+      const addProduct = /^Добавить (.+) в корзину$/.exec(trimmed);
+      if (addProduct) result = `Add ${dictionaries[addProduct[1]] || addProduct[1]} to cart`;
+      const product = /^(.+) - (.+)$/.exec(trimmed);
+      if (product && dictionaries[product[1]] && dictionaries[product[2]]) result = `${dictionaries[product[1]]} - ${dictionaries[product[2]]}`;
+      const slide = /^Работа (\d+) из (\d+)$/.exec(trimmed);
+      if (slide) result = `Project ${slide[1]} of ${slide[2]}`;
+      const artwork = /^(\d+ \/ \d+ · )(.+?)( · Загрузка…| · Не удалось загрузить\. Откройте оригинал\.)?$/.exec(trimmed);
+      if (artwork) result = artwork[1] + (dictionaries[artwork[2]] || artwork[2]) + (artwork[3] ? artwork[3].includes('Загрузка') ? ' · Loading…' : ' · Could not load. Open the original.' : '');
+      const illustration = /^(.+)\. Иллюстрация создана ИИ\.$/.exec(trimmed);
+      if (illustration) result = `${dictionaries[illustration[1]] || illustration[1]}. AI-generated illustration.`;
+      const action = /^(Рассмотреть|Настроить|Демонстрационное изображение|В избранное): (.+)$/.exec(trimmed);
+      if (action) result = `${{'Рассмотреть':'View','Настроить':'Customize','Демонстрационное изображение':'Demo image','В избранное':'Add to favorites'}[action[1]]}: ${dictionaries[action[2]] || action[2]}`;
+      const title = /^(.+) \| (LUMÉ CANDLES|Михаил Милосердов)$/.exec(trimmed);
+      if (title && dictionaries[title[1]]) result = `${dictionaries[title[1]]} | ${title[2] === 'Михаил Милосердов' ? 'Mikhail Miloserdov' : title[2]}`;
+      const details = /^(.*) Выберите размер, воск и аромат\. Оттенок и детали оформления обсудим при согласовании заказа\.$/.exec(trimmed);
+      if (details && dictionaries[details[1]]) result = dictionaries[details[1]] + ' Choose your size, wax and scent. We will discuss the shade and finishing details when confirming your order.';
+      const size = /^(\d+-\d+) см$/.exec(trimmed);
+      if (size) result = size[1] + ' cm';
+      const cart = /^Корзина, (\d+) товар(?:ов|а)?$/.exec(trimmed);
+      if (cart) result = `Cart, ${cart[1]} ${cart[1] === '1' ? 'item' : 'items'}`;
+      const total = /^Итого: (.+)$/.exec(trimmed);
+      if(total)result='Total: '+total[1];
+      const stock = /^Артикул (.+) · (Нет в наличии|В наличии: \d+)$/.exec(trimmed);
+      if(stock)result=`SKU ${stock[1]} · ${stock[2]==='Нет в наличии'?'Out of stock':stock[2].replace('В наличии:','In stock:')}`;
+      const found = /^Найдено: (\d+) · Демонстрационные товары и цены$/.exec(trimmed);
+      if(found)result=`Found: ${found[1]} · Demo products and prices`;
+      const badge = /^(Избранное|Корзина): (\d+)$/.exec(trimmed);
+      if(badge)result=`${badge[1]==='Корзина'?'Cart':'Favorites'}: ${badge[2]}`;
+    }
+    return result ? value.replace(trimmed, result) : value;
+  }
+  function update(root = document) {
+    observer?.disconnect();
+    document.documentElement.lang = language;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    let node;
+    while ((node = walker.nextNode())) {
+      if (node.parentElement?.closest('script,style,[data-language-control]')) continue;
+      const previous = originals.get(node);
+      const source = previous && node.data === previous.rendered ? previous.source : node.data;
+      const rendered = translated(source);
+      if (node.data !== rendered) node.data = rendered;
+      originals.set(node, {source, rendered});
+    }
+    for (const element of root.querySelectorAll('[title],[alt],[placeholder],[aria-label],[data-loading-label],meta[name="description"],meta[property="og:title"],meta[property="og:description"]')) {
+      if (element.closest('[data-language-control]')) continue;
+      const state = attributes.get(element) || {};
+      for (const name of ['title','alt','placeholder','aria-label','data-loading-label', ...(element.tagName === 'META' ? ['content'] : [])]) {
+        if (!element.hasAttribute(name)) continue;
+        const value = element.getAttribute(name);
+        const old = state[name];
+        const source = old && value === old.rendered ? old.source : value;
+        const rendered = translated(source);
+        if (value !== rendered) element.setAttribute(name, rendered);
+        state[name] = {source,rendered};
+      }
+      attributes.set(element,state);
+    }
+    if (control) {
+      control.setAttribute('aria-label', language === 'en' ? 'Language' : 'Язык');
+      for (const button of control.querySelectorAll('button')) button.setAttribute('aria-pressed', String(button.dataset.language === language));
+    }
+    for (const image of root.querySelectorAll('img')) {
+      const old = imageSources.get(image);
+      const current = image.getAttribute('src');
+      const source = old && current === old.rendered ? old.source : current;
+      const english = image.dataset.srcEn || window.portfolioLocalizedImages?.[source];
+      const rendered = language === 'en' && english ? english : source;
+      if (current !== rendered) image.setAttribute('src',rendered);
+      imageSources.set(image,{source,rendered});
+    }
+    observer?.observe(document.documentElement,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['title','alt','placeholder','aria-label','content']});
+  }
+  function select(value, persist = true) {
+    language = value;
+    if (persist) { try { localStorage.setItem(key,value); } catch {} }
+    const url = new URL(location.href);
+    if (url.searchParams.has('lang')) {
+      url.searchParams.set('lang', value);
+      history.replaceState(history.state, '', url.href);
+    }
+    update();
+    window.dispatchEvent(new CustomEvent('portfolio:language',{detail:{language:value}}));
+  }
+  window.portfolioLanguage = {get language(){return language;},select,translate:translated};
+  function start() {
+    const style=document.createElement('style');
+    style.textContent='[data-language-control]{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:1000;display:flex;align-items:center;background:#17191e;color:#fff;border:1px solid #666;border-radius:28px;padding:3px;box-shadow:0 3px 16px #0003;font:600 13px/1.2 system-ui,sans-serif}[data-language-control] button{font:inherit;min-width:48px;min-height:44px;border:0;border-radius:24px;background:transparent;color:inherit;cursor:pointer}[data-language-control] button[aria-pressed=true]{background:#f3efe9;color:#17191e}[data-language-control] button:focus-visible{outline:3px solid #ff8a5b;outline-offset:2px}';
+    document.head.append(style);
+    control=document.createElement('div');
+    control.dataset.languageControl='';control.setAttribute('role','group');control.setAttribute('aria-label','Language / Язык');
+    for(const [value,label] of [['ru','RUS'],['en','ENG']]){
+      if(value==='en')control.append(document.createTextNode(' / '));
+      const button=document.createElement('button');button.type='button';button.textContent=label;button.dataset.language=value;button.lang=value;button.addEventListener('click',()=>select(value));control.append(button);
+    }
+    document.body.append(control);
+    observer=new MutationObserver(()=>update());
+    update();
+    window.dispatchEvent(new CustomEvent('portfolio:language',{detail:{language}}));
+    document.addEventListener('click',event=>{
+      const anchor=event.target.closest('a[href]');if(!anchor || anchor.hasAttribute('download'))return;
+      const url=new URL(anchor.href,location.href);
+      if(url.origin === location.origin && url.pathname === location.pathname && url.hash)return;
+      if(url.hostname==='milyygg.github.io' && !/\.(png|jpe?g|webp|pdf|zip)$/i.test(url.pathname)){
+        url.searchParams.set('lang',language);anchor.href=url.href;
+      }
+    },true);
+    window.addEventListener('storage',event=>{if(event.key===key && ['ru','en'].includes(event.newValue))select(event.newValue,false);});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+})();
 </script></body></html>
